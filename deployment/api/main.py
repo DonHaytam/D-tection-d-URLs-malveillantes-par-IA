@@ -33,12 +33,44 @@ _DEFAULT_ORIGINS = "http://localhost:8501,http://127.0.0.1:8501,http://localhost
 ALLOWED_ORIGINS = [o.strip() for o in os.environ.get("ALLOWED_ORIGINS", _DEFAULT_ORIGINS).split(",") if o.strip()]
 ALLOW_CREDENTIALS = "*" not in ALLOWED_ORIGINS
 
+APP_ENV = os.environ.get("APP_ENV", "development").lower()
+if APP_ENV not in ("development", "testing", "production"):
+    APP_ENV = "development"
+
 ADMIN_API_KEY = os.environ.get("ADMIN_API_KEY")
+
+# Minimum acceptable length for an admin key (when configured)
+MIN_ADMIN_KEY_LENGTH = 24
+
+
+def _is_weak_key(key: str) -> bool:
+    if not key or len(key) < MIN_ADMIN_KEY_LENGTH:
+        return True
+    # reject trivially repeated/low-entropy keys
+    if len(set(key)) < 8:
+        return True
+    return False
+
+
+def validate_production_config():
+    """Raise RuntimeError if production config is invalid. Called at startup."""
+    if APP_ENV != "production":
+        return
+    if not ADMIN_API_KEY:
+        raise RuntimeError("APP_ENV=production requires ADMIN_API_KEY to be set")
+    if _is_weak_key(ADMIN_API_KEY):
+        raise RuntimeError("ADMIN_API_KEY is too weak (min %d chars, sufficient entropy)" % MIN_ADMIN_KEY_LENGTH)
+    if not ALLOWED_ORIGINS or "*" in ALLOWED_ORIGINS:
+        raise RuntimeError("APP_ENV=production requires explicit ALLOWED_ORIGINS (no wildcard)")
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup
+    # Startup validation (production only)
+    validate_production_config()
+    if APP_ENV == "development" and not ADMIN_API_KEY:
+        import warnings
+        warnings.warn("ADMIN_API_KEY not set: administrative endpoints are UNPROTECTED (dev mode)", stacklevel=2)
     db.init_db()
     try:
         from src.retraining.pipeline import start_scheduler
@@ -67,10 +99,38 @@ def require_admin(x_admin_api_key: Optional[str] = Header(default=None, alias="X
     in production to enforce authentication.
     """
     if not ADMIN_API_KEY:
+        if APP_ENV == "production":
+            raise HTTPException(status_code=503, detail="Admin authentication not configured")
         return True
     if not x_admin_api_key or not hmac.compare_digest(x_admin_api_key, ADMIN_API_KEY):
         raise HTTPException(status_code=401, detail="Invalid or missing admin API key")
     return True
+
+
+# --- Minimal RBAC (permission constants; enforcement via admin key) ---
+PERM_ADMIN = "admin"
+PERM_ANALYST = "analyst"
+PERM_VIEWER = "viewer"
+
+ROLE_PERMISSIONS = {
+    PERM_ADMIN: {"retrain", "approve", "schedule", "read_monitoring", "read_history", "read_stats"},
+    PERM_ANALYST: {"read_monitoring", "read_history", "read_stats"},
+    PERM_VIEWER: {"read_history", "read_stats"},
+}
+
+
+def require_permission(permission: str):
+    def _dep(x_admin_api_key: Optional[str] = Header(default=None, alias="X-Admin-API-Key")):
+        if not ADMIN_API_KEY:
+            if APP_ENV == "production":
+                raise HTTPException(status_code=503, detail="Admin authentication not configured")
+            return PERM_ADMIN
+        if not x_admin_api_key or not hmac.compare_digest(x_admin_api_key, ADMIN_API_KEY):
+            raise HTTPException(status_code=401, detail="Invalid or missing admin API key")
+        if permission not in ROLE_PERMISSIONS[PERM_ADMIN]:
+            raise HTTPException(status_code=403, detail="Insufficient permissions")
+        return PERM_ADMIN
+    return _dep
 
 
 MODEL_PATH = os.environ.get("MODEL_PATH", "D:/openhands/projects/v2/phishing_ai_master/models/versions/M1_LR_HARDNEG.joblib")
@@ -187,6 +247,7 @@ def health():
     ens = get_ensemble()
     return {"status": "ok", "model_loaded": p is not None,
             "model_version": (p.version if p else None),
+            "app_env": APP_ENV,
             "ab_test_enabled": AB_TEST_ENABLED,
             "ensemble_loaded": bool(ens and ens.available),
             "allowed_origins": ALLOWED_ORIGINS,
