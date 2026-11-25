@@ -27,6 +27,15 @@ echo [OK] Python found.
 
 REM --- Set environment ---
 set "PYTHONPATH=%VENDOR_DIR%;%PROJECT_DIR%"
+
+REM --- Initialiser la base de donnees ---
+echo [INFO] Initialisation de la base de donnees...
+python -c "from src.storage.db import init_db; init_db()" 2>nul
+if errorlevel 1 (
+    echo [WARNING] Database init failed. Continuing anyway.
+) else (
+    echo [OK] Database initialized.
+)
 set "MODEL_PATH=%PROJECT_DIR%\models\versions\M1_LR_HARDNEG.joblib"
 set "META_PATH=%PROJECT_DIR%\models\versions\metadata.json"
 set "AB_TEST_ENABLED=1"
