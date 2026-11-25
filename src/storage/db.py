@@ -276,7 +276,7 @@ def get_stats():
     }
 
 
-def get_feedback_rows():
+def get_feedback_rows(limit=100000):
     """Return all feedback rows with associated prediction data."""
     init_db()
     conn = connect()
@@ -288,7 +288,8 @@ def get_feedback_rows():
                       FROM feedback
                       WHERE rowid IN (SELECT MAX(rowid) FROM feedback GROUP BY prediction_id)) r
            ON p.id = r.prediction_id
-           ORDER BY p.id DESC"""
+           ORDER BY p.id DESC LIMIT ?""",
+        (limit,),
     ).fetchall()
     conn.close()
     return [dict(r) for r in rows]
@@ -335,24 +336,25 @@ def get_ab_test():
     }
 
 
-def create_retraining_run(run_type, details=None):
+def create_retraining_run(trigger=None, run_type=None, notes=None, details=None, **kwargs):
     """Create a retraining run record.
 
     Returns the run id.
     """
     init_db()
     conn = connect()
-    eligible = int(details.get("eligible", 0) if details else 0)
-    total = int(details.get("total", 0) if details else 0)
-    positive = int(details.get("positive", 0) if details else 0)
-    negative = int(details.get("negative", 0) if details else 0)
-    details_json = json.dumps(details) if details else None
+    rt = trigger or run_type or "manual"
+    eligible = int((details or {}).get("eligible", 0) if details else kwargs.get("eligible", 0))
+    total = int((details or {}).get("total", 0) if details else kwargs.get("total", 0))
+    positive = int((details or {}).get("positive", 0) if details else kwargs.get("positive", 0))
+    negative = int((details or {}).get("negative", 0) if details else kwargs.get("negative", 0))
+    details_json = json.dumps(details) if details else json.dumps(kwargs) if kwargs else (notes if notes else None)
     ts = datetime.now(timezone.utc).isoformat()
     conn.execute(
         """INSERT INTO retraining_runs
            (run_type, eligible, total, positive, negative, details_json, timestamp)
            VALUES (?, ?, ?, ?, ?, ?, ?)""",
-        (run_type, eligible, total, positive, negative, details_json, ts),
+        (rt, eligible, total, positive, negative, details_json, ts),
     )
     run_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
     conn.commit()
@@ -373,7 +375,7 @@ def get_retraining_runs(limit=50):
     return [dict(r) for r in rows]
 
 
-def update_retraining_run(run_id, eligible=None, total=None, status=None):
+def update_retraining_run(run_id, eligible=None, total=None, status=None, **kwargs):
     """Update a retraining run record."""
     init_db()
     conn = connect()
@@ -388,6 +390,20 @@ def update_retraining_run(run_id, eligible=None, total=None, status=None):
     if status is not None:
         updates.append("status = ?")
         params.append(status)
+    # Handle additional kwargs
+    if kwargs.get("n_feedback") is not None:
+        updates.append("eligible = ?")
+        params.append(kwargs["n_feedback"])
+    if kwargs.get("finished_at") is not None:
+        pass  # timestamp already exists
+    if kwargs.get("notes") is not None:
+        pass  # no notes column, store in details_json
+    if kwargs.get("n_positive") is not None:
+        updates.append("positive = ?")
+        params.append(kwargs["n_positive"])
+    if kwargs.get("n_negative") is not None:
+        updates.append("negative = ?")
+        params.append(kwargs["n_negative"])
     if not updates:
         conn.close()
         return
@@ -607,7 +623,7 @@ def get_monitoring(window_days=7):
     }
 
 
-def get_history(days=30):
+def get_history(limit=100, offset=0, days=30):
     """Return historical predictions for the given number of days."""
     init_db()
     conn = connect()
@@ -615,8 +631,8 @@ def get_history(days=30):
     cutoff_iso = cutoff.isoformat()
     rows = conn.execute(
         """SELECT id, url, verdict, score, user_feedback, variant, model_version, timestamp, registrable_domain
-           FROM predictions WHERE timestamp > ? ORDER BY id DESC""",
-        (cutoff_iso,),
+           FROM predictions WHERE timestamp > ? ORDER BY id DESC LIMIT ? OFFSET ?""",
+        (cutoff_iso, limit, offset),
     ).fetchall()
     conn.close()
     return [dict(r) for r in rows]
