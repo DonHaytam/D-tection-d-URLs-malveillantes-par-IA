@@ -1,0 +1,189 @@
+[
+  {
+    "low": 0.25,
+    "high": 0.7,
+    "strict_recall": 0.8814631228100163,
+    "detected_incl_review": 0.9700880266643876,
+    "fpr": 0.031051906293063848,
+    "review_rate": 0.08354733020455149,
+    "review_rate_legit": 0.07808911345888837,
+    "review_rate_phish": 0.08862490385437143,
+    "missed_phish": 0.02991197333561234
+  },
+  {
+    "low": 0.25,
+    "high": 0.75,
+    "strict_recall": 0.8608665925989232,
+    "detected_incl_review": 0.9700880266643876,
+    "fpr": 0.026458429030776297,
+    "review_rate": 0.09643141769237581,
+    "review_rate_legit": 0.08268259072117592,
+    "review_rate_phish": 0.10922143406546449,
+    "missed_phish": 0.02991197333561234
+  },
+  {
+    "low": 0.25,
+    "high": 0.8,
+    "strict_recall": 0.8386462695496112,
+    "detected_incl_review": 0.9700880266643876,
+    "fpr": 0.020211299954065228,
+    "review_rate": 0.1109536881253874,
+    "review_rate_legit": 0.088929719797887,
+    "review_rate_phish": 0.13144175711477651,
+    "missed_phish": 0.02991197333561234
+  },
+  {
+    "low": 0.25,
+    "high": 0.85,
+    "strict_recall": 0.8101017007093411,
+    "detected_incl_review": 0.9700880266643876,
+    "fpr": 0.014331649058337162,
+    "review_rate": 0.12857522358983442,
+    "review_rate_legit": 0.09480937069361507,
+    "review_rate_phish": 0.15998632595504658,
+    "missed_phish": 0.02991197333561234
+  },
+  {
+    "low": 0.25,
+    "high": 0.88,
+    "strict_recall": 0.7874540637552346,
+    "detected_incl_review": 0.9700880266643876,
+    "fpr": 0.01240238860817639,
+    "review_rate": 0.14123793500398477,
+    "review_rate_legit": 0.09673863114377584,
+    "review_rate_phish": 0.18263396290915307,
+    "missed_phish": 0.02991197333561234
+  },
+  {
+    "low": 0.25,
+    "high": 0.9,
+    "strict_recall": 0.7690795658490728,
+    "detected_incl_review": 0.9700880266643876,
+    "fpr": 0.010381258612769867,
+    "review_rate": 0.15173116089613034,
+    "review_rate_legit": 0.09875976113918236,
+    "review_rate_phish": 0.20100846081531493,
+    "missed_phish": 0.02991197333561234
+  },
+  {
+    "low": 0.25,
+    "high": 0.903,
+    "strict_recall": 0.765661054610717,
+    "detected_incl_review": 0.9700880266643876,
+    "fpr": 0.009921910886541112,
+    "review_rate": 0.15372354555919596,
+    "review_rate_legit": 0.09921910886541112,
+    "review_rate_phish": 0.20442697205367064,
+    "missed_phish": 0.02991197333561234
+  },
+  {
+    "low": 0.25,
+    "high": 0.92,
+    "strict_recall": 0.7453209127425007,
+    "detected_incl_review": 0.9700880266643876,
+    "fpr": 0.00891134588883785,
+    "review_rate": 0.16474807402815903,
+    "review_rate_legit": 0.10022967386311438,
+    "review_rate_phish": 0.22476711392188703,
+    "missed_phish": 0.02991197333561234
+  },
+  {
+    "low": 0.25,
+    "high": 0.95,
+    "strict_recall": 0.6972908298436031,
+    "detected_incl_review": 0.9700880266643876,
+    "fpr": 0.005512172714745062,
+    "review_rate": 0.19126892765429912,
+    "review_rate_legit": 0.10362884703720716,
+    "review_rate_phish": 0.27279719682078457,
+    "missed_phish": 0.02991197333561234
+  },
+  {
+    "low": 0.05,
+    "high": 0.903,
+    "strict_recall": 0.765661054610717,
+    "detected_incl_review": 0.9929920519613709,
+    "fpr": 0.009921910886541112,
+    "review_rate": 0.2715841671832108,
+    "review_rate_legit": 0.3191548001837391,
+    "review_rate_phish": 0.2273309973506538,
+    "missed_phish": 0.007007948038629177
+  },
+  {
+    "low": 0.1,
+    "high": 0.903,
+    "strict_recall": 0.765661054610717,
+    "detected_incl_review": 0.985642252798906,
+    "fpr": 0.009921910886541112,
+    "review_rate": 0.2121225537943859,
+    "review_rate_legit": 0.20367478180983004,
+    "review_rate_phish": 0.21998119818818904,
+    "missed_phish": 0.014357747201093923
+  },
+  {
+    "low": 0.15,
+    "high": 0.903,
+    "strict_recall": 0.765661054610717,
+    "detected_incl_review": 0.9801726348175369,
+    "fpr": 0.009921910886541112,
+    "review_rate": 0.18484902151775437,
+    "review_rate_legit": 0.15296279283417547,
+    "review_rate_phish": 0.21451158020681993,
+    "missed_phish": 0.019827365182463037
+  },
+  {
+    "low": 0.2,
+    "high": 0.903,
+    "strict_recall": 0.765661054610717,
+    "detected_incl_review": 0.9744466284932912,
+    "fpr": 0.009921910886541112,
+    "review_rate": 0.1659435048259984,
+    "review_rate_legit": 0.11988975654570509,
+    "review_rate_phish": 0.20878557388257413,
+    "missed_phish": 0.02555337150670883
+  },
+  {
+    "low": 0.25,
+    "high": 0.903,
+    "strict_recall": 0.765661054610717,
+    "detected_incl_review": 0.9700880266643876,
+    "fpr": 0.009921910886541112,
+    "review_rate": 0.15372354555919596,
+    "review_rate_legit": 0.09921910886541112,
+    "review_rate_phish": 0.20442697205367064,
+    "missed_phish": 0.02991197333561234
+  },
+  {
+    "low": 0.3,
+    "high": 0.903,
+    "strict_recall": 0.765661054610717,
+    "detected_incl_review": 0.9640201692163063,
+    "fpr": 0.009921910886541112,
+    "review_rate": 0.14376162224386788,
+    "review_rate_legit": 0.08507119889756545,
+    "review_rate_phish": 0.19835911460558928,
+    "missed_phish": 0.035979830783693705
+  },
+  {
+    "low": 0.35,
+    "high": 0.903,
+    "strict_recall": 0.765661054610717,
+    "detected_incl_review": 0.9590633279206905,
+    "fpr": 0.009921910886541112,
+    "review_rate": 0.1359249092358098,
+    "review_rate_legit": 0.07413872301332108,
+    "review_rate_phish": 0.1934022733099735,
+    "missed_phish": 0.04093667207930946
+  },
+  {
+    "low": 0.4,
+    "high": 0.903,
+    "strict_recall": 0.765661054610717,
+    "detected_incl_review": 0.952311768224938,
+    "fpr": 0.009921910886541112,
+    "review_rate": 0.12733551757726025,
+    "review_rate_legit": 0.06357372531005971,
+    "review_rate_phish": 0.186650713614221,
+    "missed_phish": 0.047688231775061964
+  }
+]

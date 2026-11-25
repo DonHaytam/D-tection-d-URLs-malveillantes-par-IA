@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing AI Master 2 - Detection de phishing</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Phishing AI</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-page="analyse">
+                <i class="fa-solid fa-magnifying-glass"></i> Analyse
+            </a>
+            <a href="#" class="nav-item" data-page="historique">
+                <i class="fa-solid fa-clock-rotate-left"></i> Historique
+            </a>
+            <a href="#" class="nav-item" data-page="statistiques">
+                <i class="fa-solid fa-chart-bar"></i> Statistiques
+            </a>
+            <a href="#" class="nav-item" data-page="collecte">
+                <i class="fa-solid fa-database"></i> Collecte
+            </a>
+            <a href="#" class="nav-item" data-page="laboratoire">
+                <i class="fa-solid fa-flask"></i> Laboratoire
+            </a>
+            <a href="#" class="nav-item" data-page="idees">
+                <i class="fa-solid fa-lightbulb"></i> Idees
+            </a>
+            <a href="#" class="nav-item" data-page="apropos">
+                <i class="fa-solid fa-circle-info"></i> A propos
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <p>Modele : M1_LR_HARDNEG</p>
+            <p>A/B : M1 vs Ensemble</p>
+            <p>Analyse passive</p>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <!-- Page: Analyse -->
+        <section id="page-analyse" class="page active">
+            <h1><i class="fa-solid fa-shield-halved"></i> Detection de phishing</h1>
+            <p class="subtitle">Analyse passive des chaines URL - aucune visite automatique.</p>
+
+            <div class="card">
+                <div class="input-group">
+                    <input type="text" id="urlInput" placeholder="https://example.com/login" class="url-input">
+                    <button id="analyzeBtn" class="btn-primary">
+                        <i class="fa-solid fa-magnifying-glass"></i> Analyser
+                    </button>
+                </div>
+            </div>
+
+            <div id="resultCard" class="card result-card" style="display:none;">
+                <div id="verdictDisplay" class="verdict-display"></div>
+                <div class="score-section">
+                    <div class="score-text" id="scoreText">Score de risque : 0%</div>
+                    <div class="score-bar">
+                        <div class="score-fill" id="scoreFill" style="width:0%"></div>
+                    </div>
+                </div>
+                <div class="metrics-row">
+                    <div class="metric-box">
+                        <div class="label">Version modele</div>
+                        <div class="value" id="modelVersion">-</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="label">Seuils</div>
+                        <div class="value" id="thresholds">-</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="label">Temps (ms)</div>
+                        <div class="value" id="procTime">-</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="label">Variante A/B</div>
+                        <div class="value" id="variantDisplay">-</div>
+                    </div>
+                </div>
+
+                <div id="activeLearningHint" class="hint-box" style="display:none;">
+                    <i class="fa-solid fa-bullseye"></i>
+                    <strong>Zone incertaine (0.4 - 0.6).</strong>
+                    Cette URL est prioritaire pour l'active learning : votre feedback est particulierement utile.
+                </div>
+
+                <div class="feedback-section">
+                    <p id="feedbackPrompt">Cette prediction est-elle correcte ?</p>
+                    <div class="feedback-buttons" id="feedbackButtons">
+                        <button class="btn-feedback btn-correct" onclick="sendFeedback('correct')">
+                            <i class="fa-solid fa-check"></i> Correct
+                        </button>
+                        <button class="btn-feedback btn-incorrect" onclick="sendFeedback('incorrect')">
+                            <i class="fa-solid fa-xmark"></i> Incorrect
+                        </button>
+                        <button class="btn-feedback btn-unknown" onclick="sendFeedback('unknown')">
+                            <i class="fa-solid fa-question"></i> Je ne sais pas
+                        </button>
+                    </div>
+                    <div id="feedbackDetails" class="feedback-details" style="display:none;">
+                        <label for="correctedLabel">Vraie classe de l'URL</label>
+                        <select id="correctedLabel">
+                            <option value="phishing">Phishing</option>
+                            <option value="legitimate">Legitime</option>
+                        </select>
+                        <input type="text" id="feedbackComment" placeholder="Commentaire optionnel (ex: faux positif, nouveau kit...)" maxlength="300">
+                        <div class="feedback-buttons">
+                            <button class="btn-feedback btn-incorrect" onclick="submitIncorrectFeedback()">
+                                <i class="fa-solid fa-paper-plane"></i> Envoyer le feedback
+                            </button>
+                            <button class="btn-feedback btn-unknown" onclick="hideFeedbackDetails()">Annuler</button>
+                        </div>
+                    </div>
+                    <div id="feedbackMsg" class="feedback-msg"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fa-solid fa-list"></i> Analyse par lot</h3>
+                <textarea id="batchUrls" placeholder="Entrez plusieurs URL (une par ligne)" rows="5"></textarea>
+                <button id="batchBtn" class="btn-secondary">
+                    <i class="fa-solid fa-play"></i> Analyser le lot
+                </button>
+                <div id="batchResults"></div>
+            </div>
+        </section>
+
+        <!-- Page: Historique -->
+        <section id="page-historique" class="page">
+            <h1><i class="fa-solid fa-clock-rotate-left"></i> Historique</h1>
+            <p class="subtitle">Dernieres predictions enregistrees dans la base SQLite.</p>
+            <div class="card">
+                <table id="historyTable" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>URL</th>
+                            <th>Verdict</th>
+                            <th>Score</th>
+                            <th>Modele</th>
+                            <th>Variante</th>
+                            <th>Date</th>
+                            <th>Feedback</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div id="historyEmpty" class="empty-state" style="display:none;">Aucune prediction pour le moment.</div>
+            </div>
+        </section>
+
+        <!-- Page: Statistiques -->
+        <section id="page-statistiques" class="page">
+            <h1><i class="fa-solid fa-chart-bar"></i> Statistiques</h1>
+            <p class="subtitle">Metriques calculees en temps reel sur les predictions et feedbacks.</p>
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <div class="label">Total predictions</div>
+                    <div class="value" id="statTotal">0</div>
+                </div>
+                <div class="metric-box">
+                    <div class="label">Avec feedback</div>
+                    <div class="value" id="statFeedback">0</div>
+                </div>
+                <div class="metric-box">
+                    <div class="label">Correct</div>
+                    <div class="value" id="statCorrect">0</div>
+                </div>
+                <div class="metric-box">
+                    <div class="label">Incorrect</div>
+                    <div class="value" id="statIncorrect">0</div>
+                </div>
+                <div class="metric-box">
+                    <div class="label">Taux incorrect</div>
+                    <div class="value" id="statIncorrectRate">0%</div>
+                </div>
+                <div class="metric-box">
+                    <div class="label">Active learning</div>
+                    <div class="value" id="statActive">0</div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Distribution des verdicts</h3>
+                <div id="verdictDist"></div>
+            </div>
+            <div class="card">
+                <h3>Distribution des scores</h3>
+                <div id="scoreHistogram" class="bar-chart"></div>
+            </div>
+            <div class="card">
+                <h3>Activite des 7 derniers jours</h3>
+                <div id="dailyChart" class="bar-chart"></div>
+            </div>
+        </section>
+
+        <!-- Page: Collecte -->
+        <section id="page-collecte" class="page">
+            <h1><i class="fa-solid fa-database"></i> Collecte et Reentrainement</h1>
+            <p class="subtitle">Feedback persistant, file d'active learning et candidats de reentrainement.</p>
+            <div class="card">
+                <h3>Comment ca marche</h3>
+                <ol>
+                    <li>Chaque prediction est enregistree dans SQLite avec son score, sa variante A/B et son explication.</li>
+                    <li>Le feedback utilisateur est envoye a l'API et met a jour la prediction.</li>
+                    <li>Les URL confirmees alimentent un candidat de reentrainement, evalue sur DEV.</li>
+                    <li>Le candidat reste en attente d'approbation manuelle : aucun deploiement automatique.</li>
+                </ol>
+            </div>
+            <div class="card">
+                <h3><i class="fa-solid fa-bullseye"></i> File d'active learning <span id="activeLearningCount" class="badge">0</span></h3>
+                <p class="caption">URL avec score entre 0.4 et 0.6, sans feedback : les plus informatives pour le modele.</p>
+                <div id="activeLearningTable"></div>
+            </div>
+            <div class="card">
+                <h3>Donnees avec feedback</h3>
+                <div id="feedbackData"></div>
+                <a class="btn-secondary" href="http://127.0.0.1:8000/feedback/export" download>
+                    <i class="fa-solid fa-download"></i> Exporter en CSV
+                </a>
+            </div>
+            <div class="card">
+                <h3><i class="fa-solid fa-rotate"></i> Reentrainement</h3>
+                <div id="retrainStatus"></div>
+                <button id="runRetrainBtn" class="btn-secondary" onclick="runRetraining()">
+                    <i class="fa-solid fa-play"></i> Lancer un reentrainement
+                </button>
+                <p class="caption">Le pipeline valide les donnees, deduplique, entraine un candidat, l'evalue sur DEV et attend une approbation manuelle.</p>
+                <div id="retrainRuns"></div>
+            </div>
+        </section>
+
+        <!-- Page: Laboratoire -->
+        <section id="page-laboratoire" class="page">
+            <div class="page-header-row">
+                <div>
+                    <h1><i class="fa-solid fa-flask"></i> Laboratoire</h1>
+                    <p class="subtitle">Pilotage temps reel : active learning, A/B testing, monitoring et reentrainement.</p>
+                </div>
+                <button class="btn-secondary" onclick="refreshLab()"><i class="fa-solid fa-rotate"></i> Rafraichir</button>
+            </div>
+
+            <div id="labAlert" class="alert-banner" style="display:none;"></div>
+
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <div class="label">Taux feedback incorrect</div>
+                    <div class="value" id="labIncorrectRate">0%</div>
+                    <div class="metric-sub" id="labIncorrectSub">seuil 5%</div>
+                </div>
+                <div class="metric-box">
+                    <div class="label">File active learning</div>
+                    <div class="value" id="labActiveCount">0</div>
+                    <div class="metric-sub">zone 0.4 - 0.6</div>
+                </div>
+                <div class="metric-box">
+                    <div class="label">Gagnant A/B</div>
+                    <div class="value" id="labAbWinner">-</div>
+                    <div class="metric-sub">M1 vs Ensemble</div>
+                </div>
+                <div class="metric-box">
+                    <div class="label">Data drift</div>
+                    <div class="value" id="labDrift">-</div>
+                    <div class="metric-sub" id="labDriftSub">PSI</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fa-solid fa-flask"></i> A/B Testing en production</h3>
+                <p class="caption">Repartition 50/50 par client. M1 = regression logistique deployee. Ensemble = soft voting pondere M1 0.5 + M2 0.3 + M5 0.2.</p>
+                <div class="ab-grid">
+                    <div class="ab-card" id="abM1"></div>
+                    <div class="ab-card" id="abEnsemble"></div>
+                </div>
+                <div id="abTable"></div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fa-solid fa-bell"></i> Monitoring</h3>
+                <div id="monitorAlerts"></div>
+                <div class="monitor-grid">
+                    <div>
+                        <h4>Distribution des scores (7j)</h4>
+                        <div id="scoreDrift" class="bar-chart"></div>
+                    </div>
+                    <div>
+                        <h4>Derive des domaines</h4>
+                        <div id="domainDrift" class="monitor-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fa-solid fa-bullseye"></i> Priorites active learning</h3>
+                <div id="labActiveTable"></div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fa-solid fa-rotate"></i> Reentrainement automatique</h3>
+                <div id="labRetrainStatus"></div>
+                <div id="labRetrainRuns"></div>
+            </div>
+            <p class="caption">Derniere actualisation : <span id="labRefreshTime">-</span></p>
+        </section>
+
+        <!-- Page: Idees -->
+        <section id="page-idees" class="page">
+            <h1><i class="fa-solid fa-lightbulb"></i> Idees et feuille de route</h1>
+            <p class="subtitle">Les fonctions demandees sont maintenant integrees ; les prochaines pistes sont classees par priorite.</p>
+
+            <div class="status-legend">
+                <span class="badge badge-success"><i class="fa-solid fa-check"></i> Implemente</span>
+                <span class="badge badge-warning"><i class="fa-solid fa-code"></i> Partiel</span>
+                <span class="badge badge-neutral"><i class="fa-solid fa-flask"></i> A tester</span>
+            </div>
+
+            <div class="idea-grid">
+                <div class="card idea-card">
+                    <div class="idea-head"><h3><i class="fa-solid fa-bullseye"></i> Active Learning</h3><span class="badge badge-success">Implemente</span></div>
+                    <p>Les URL avec score 0.4 - 0.6 sont priorisees dans la file de feedback. Le compteur est alimente en temps reel.</p>
+                    <div class="metric-inline"><span>En attente</span><strong id="ideaActiveCount">0</strong></div>
+                </div>
+                <div class="card idea-card">
+                    <div class="idea-head"><h3><i class="fa-solid fa-flask"></i> A/B Testing</h3><span class="badge badge-success">Implemente</span></div>
+                    <p>Trafic reparti 50/50 entre M1 et l'ensemble pondere. Les metriques sont calculees par variante.</p>
+                    <div class="metric-inline"><span>Gagnant actuel</span><strong id="ideaAbWinner">-</strong></div>
+                </div>
+                <div class="card idea-card">
+                    <div class="idea-head"><h3><i class="fa-solid fa-bell"></i> Monitoring</h3><span class="badge badge-success">Implemente</span></div>
+                    <p>Alerte si le taux de feedback incorrect depasse 5%, avec PSI de data drift et domain drift.</p>
+                    <div class="metric-inline"><span>Statut</span><strong id="ideaAlert">-</strong></div>
+                </div>
+                <div class="card idea-card">
+                    <div class="idea-head"><h3><i class="fa-solid fa-rotate"></i> Reentrainement</h3><span class="badge badge-success">Implemente</span></div>
+                    <p>Planification hebdomadaire, validation, deduplication, evaluation DEV et approbation manuelle avant deploiement.</p>
+                    <div class="metric-inline"><span>Dernier run</span><strong id="ideaLastRetrain">-</strong></div>
+                </div>
+                <div class="card idea-card">
+                    <div class="idea-head"><h3><i class="fa-solid fa-magnifying-glass-chart"></i> Explainability</h3><span class="badge badge-success">Implemente</span></div>
+                    <p>Contribution des n-grammes de caracteres via les coefficients de la regression logistique, avec annotation de l'URL.</p>
+                </div>
+                <div class="card idea-card">
+                    <div class="idea-head"><h3><i class="fa-solid fa-people-group"></i> Multi-modele</h3><span class="badge badge-success">Implemente</span></div>
+                    <p>Soft voting pondere M1 0.5 + M2 0.3 + M5 0.2. Reference DEV : recall 0.8595, FPR 0.0345, AUC 0.9714.</p>
+                    <div class="metric-inline"><span>Variante live</span><strong>M1 vs Ensemble</strong></div>
+                </div>
+                <div class="card idea-card">
+                    <div class="idea-head"><h3><i class="fa-solid fa-database"></i> Enrichissement</h3><span class="badge badge-warning">Partiel</span></div>
+                    <p>Pool externe de 518 419 URL, Tranco en feature hybride, hard negatives et audit de labels. Les donnees 2024-2025 restent a collecter.</p>
+                </div>
+                <div class="card idea-card">
+                    <div class="idea-head"><h3><i class="fa-solid fa-gauge-high"></i> Optimisation</h3><span class="badge badge-neutral">A tester</span></div>
+                    <p>Stacking de niveau 2, embeddings de domaines, reduction de la dependance aux tokens suspects et calibration isotonic.</p>
+                </div>
+            </div>
+
+            <h2 class="section-title"><i class="fa-solid fa-rocket"></i> Nouvelles idees / prochaines etapes</h2>
+            <div class="idea-grid">
+                <div class="card idea-card">
+                    <div class="idea-head"><h3>Stacking de niveau 2</h3><span class="badge badge-neutral">Priorite haute</span></div>
+                    <p>Utiliser les scores M1/M2/M5 et des features de contexte comme entree d'un meta-classifieur, avec validation croisee par domaine.</p>
+                </div>
+                <div class="card idea-card">
+                    <div class="idea-head"><h3>Embeddings de domaines</h3><span class="badge badge-neutral">Priorite haute</span></div>
+                    <p>Representer les domaines par des embeddings appris sur les tokens et la structure, pour mieux generaliser aux typosquats et aux nouvelles campagnes.</p>
+                </div>
+                <div class="card idea-card">
+                    <div class="idea-head"><h3>Detection de campagnes par graphe</h3><span class="badge badge-neutral">Priorite haute</span></div>
+                    <p>Relier les URL par domaine, certificat, template et infrastructure passive pour detecter des campagnes plutot que des pages isolees.</p>
+                </div>
+                <div class="card idea-card">
+                    <div class="idea-head"><h3>Apprentissage federal</h3><span class="badge badge-neutral">Priorite moyenne</span></div>
+                    <p>Agreger les feedbacks de plusieurs instances sans centraliser les URL sensibles, avec budget de confidentialite.</p>
+                </div>
+                <div class="card idea-card">
+                    <div class="idea-head"><h3>Explications contrefactuelles</h3><span class="badge badge-neutral">Priorite moyenne</span></div>
+                    <p>Afficher la modification minimale qui ferait changer la decision (ex: retirer un token, changer de TLD) pour aider l'analyste.</p>
+                </div>
+                <div class="card idea-card">
+                    <div class="idea-head"><h3>Adversarial training</h3><span class="badge badge-neutral">Priorite moyenne</span></div>
+                    <p>Generer des variantes typosquatting et des hard negatives a partir de donnees reelles, sans fabriquer d'URL de phishing synthetique.</p>
+                </div>
+                <div class="card idea-card">
+                    <div class="idea-head"><h3>Alertes email / Slack</h3><span class="badge badge-neutral">Priorite moyenne</span></div>
+                    <p>Notifier les responsables quand le taux d'erreur, le drift ou la file active learning depassent les seuils.</p>
+                </div>
+                <div class="card idea-card">
+                    <div class="idea-head"><h3>Canary et rollback</h3><span class="badge badge-neutral">Priorite haute</span></div>
+                    <p>Deployer un candidat sur 5% du trafic, surveiller les erreurs et revenir automatiquement a M1 en cas de regression.</p>
+                </div>
+                <div class="card idea-card">
+                    <div class="idea-head"><h3>Authentification et rate limiting</h3><span class="badge badge-neutral">Priorite haute</span></div>
+                    <p>Proteger l'API de feedback et de reentrainement par role, avec quotas par client et journal d'audit.</p>
+                </div>
+                <div class="card idea-card">
+                    <div class="idea-head"><h3>Interface multilingue</h3><span class="badge badge-neutral">Priorite basse</span></div>
+                    <p>Ajouter francais / anglais / arabe avec detection de la langue et conservation des libelles de verdict.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page: A propos -->
+        <section id="page-apropos" class="page">
+            <h1><i class="fa-solid fa-circle-info"></i> A propos</h1>
+            <div class="card">
+                <h3>Phishing AI Master 2</h3>
+                <p>Detection intelligente des URL de phishing et malveillantes par IA et ML</p>
+                <table class="info-table">
+                    <tr><td>Modele deploye</td><td>M1_LR_HARDNEG (Logistic Regression, char TF-IDF 3-5)</td></tr>
+                    <tr><td>Recall DEV</td><td>0.7383 (politique 3 classes 0.25/0.75)</td></tr>
+                    <tr><td>FPR DEV</td><td>0.0087</td></tr>
+                    <tr><td>ROC-AUC</td><td>0.9610</td></tr>
+                    <tr><td>Seuils</td><td>low=0.25 (legitime), high=0.75 (phishing)</td></tr>
+                    <tr><td>Ensemble</td><td>M1 0.5 + M2 0.3 + M5 0.2 (A/B)</td></tr>
+                    <tr><td>Analyse</td><td>Passive (aucune visite d'URL)</td></tr>
+                </table>
+            </div>
+            <div class="card">
+                <h3>Architecture</h3>
+                <ul>
+                    <li>Backend : FastAPI (Python 3.10)</li>
+                    <li>Frontend : HTML/CSS/JS (ce site)</li>
+                    <li>Base de donnees : SQLite (predictions, feedback, monitoring, runs)</li>
+                    <li>Modeles : scikit-learn, XGBoost</li>
+                    <li>Operations : active learning, A/B testing, monitoring, scheduler de reentrainement</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Securite</h3>
+                <ul>
+                    <li>Pas de visite automatique des URL soumises</li>
+                    <li>Pas de resolution DNS</li>
+                    <li>Pas de requetes HTTP GET/HEAD vers les URL analysees</li>
+                    <li>Analyse purement textuelle</li>
+                </ul>
+            </div>
+            <p class="caption">Projet Master 2 Intelligence Artificielle - Cybersecurite</p>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

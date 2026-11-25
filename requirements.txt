@@ -1,0 +1,38 @@
+# Phishing AI Master 2 — Dependencies (Python 3.10, Windows)
+# Pinned to the verified environment of 24 November 2026 (reports/ENVIRONMENT_REPORT.md).
+
+numpy==2.2.6
+pandas==2.3.3
+scipy==1.15.3
+matplotlib==3.10.9
+scikit-learn==1.7.2
+joblib==1.5.3
+
+# Experiment tracking
+mlflow==3.17.2
+
+# Web / backend
+fastapi==0.142.2
+uvicorn==0.47.0
+SQLAlchemy==2.0.55
+httpx==0.28.1
+
+# User interface
+streamlit==1.57.0
+
+# Profiling / testing
+pytest==9.1.1
+
+# Torch stack (CPU)
+torch==2.12.0+cpu
+transformers==4.45.2
+sentence-transformers==5.5.1
+
+# Optional gradient boosting / statistical visualization (installed in vendor_libs/,
+# because the C: drive is nearly full — see vendor_libs/README.txt)
+# xgboost==3.2.0
+# lightgbm==4.7.0
+# seaborn==0.13.2
+
+# Interactive visualization (verified on 24/11/2026: plotly 7.1.0 in site-packages)
+plotly==7.1.0

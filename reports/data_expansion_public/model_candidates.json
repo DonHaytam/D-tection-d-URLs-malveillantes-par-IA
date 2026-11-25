@@ -1,0 +1,842 @@
+{
+  "CLEAN_TRAIN_ONLY": {
+    "config": {
+      "n_legit": 0,
+      "n_phish": 0,
+      "mode": "random",
+      "C": 1.0,
+      "class_weight": "balanced",
+      "external_weight": 1.0,
+      "n_train": 114873,
+      "n_features": 20000
+    },
+    "training_time_s": 3.36,
+    "dev": {
+      "n": 22586,
+      "positives": 11701,
+      "negatives": 10885,
+      "at_0.5": {
+        "accuracy": 0.8947135393606659,
+        "precision": 0.943319067998098,
+        "recall": 0.8477053243312538,
+        "f1": 0.8929600288080662,
+        "specificity": 0.9452457510335324,
+        "fpr": 0.05475424896646761,
+        "roc_auc": 0.9592705192230997,
+        "pr_auc": 0.9675964282780252,
+        "brier": 0.07843441732328753,
+        "tp": 9919,
+        "fp": 596,
+        "tn": 10289,
+        "fn": 1782,
+        "ece": 0.030387024199076434
+      },
+      "best_threshold_fpr_le_0.01": {
+        "threshold": 0.8027185345069782,
+        "accuracy": 0.8469848578765607,
+        "precision": 0.9872355513532679,
+        "recall": 0.7138706093496282,
+        "f1": 0.8285884336871342,
+        "specificity": 0.9900780891134588,
+        "fpr": 0.009921910886541112,
+        "roc_auc": 0.9592705192230997,
+        "pr_auc": 0.9675964282780252,
+        "brier": 0.07843441732328753,
+        "tp": 8353,
+        "fp": 108,
+        "tn": 10777,
+        "fn": 3348
+      },
+      "three_class_0.25_0.75": {
+        "phishing_recall": 0.7467737800188018,
+        "phishing_detected_incl_review": 0.9387231860524742,
+        "legit_fpr": 0.014882866329811667,
+        "review_rate": 0.20216063047905783,
+        "review_rate_legit": 0.2131373449701424,
+        "review_rate_phish": 0.19194940603367233
+      },
+      "auth": {}
+    },
+    "external_dev": {
+      "n": 62767,
+      "positives": 30836,
+      "negatives": 31931,
+      "at_0.5": {
+        "accuracy": 0.9455127694489143,
+        "precision": 0.9416521683098138,
+        "recall": 0.9478207290180308,
+        "f1": 0.9447263794162329,
+        "specificity": 0.9432839560301901,
+        "fpr": 0.0567160439698099,
+        "roc_auc": 0.9851674707168211,
+        "pr_auc": 0.9883350793833466,
+        "brier": 0.04867871052390407,
+        "tp": 29227,
+        "fp": 1811,
+        "tn": 30120,
+        "fn": 1609,
+        "ece": 0.07685974276562296
+      },
+      "best_threshold_fpr_le_0.01": {
+        "threshold": 0.6910484309751341,
+        "accuracy": 0.9543868593369127,
+        "precision": 0.9888504421376394,
+        "recall": 0.9174990271111688,
+        "f1": 0.9518394536309654,
+        "specificity": 0.9900097084338104,
+        "fpr": 0.009990291566189597,
+        "roc_auc": 0.9851674707168211,
+        "pr_auc": 0.9883350793833466,
+        "brier": 0.04867871052390407,
+        "tp": 28292,
+        "fp": 319,
+        "tn": 31612,
+        "fn": 2544
+      },
+      "three_class_0.25_0.75": {
+        "phishing_recall": 0.906116227785705,
+        "phishing_detected_incl_review": 0.9813853936956803,
+        "legit_fpr": 0.0046663117346778995,
+        "review_rate": 0.18436439530326446,
+        "review_rate_legit": 0.2897184554194983,
+        "review_rate_phish": 0.07526916590997536
+      },
+      "auth": {
+        "legit_auth": {
+          "n": 10,
+          "mean_score": 0.4382919985155957,
+          "score_ge_0.5": 0.5,
+          "score_ge_0.75": 0.3
+        },
+        "phish_auth": {
+          "n": 1234,
+          "mean_score": 0.9746429890925813,
+          "score_ge_0.5": 0.9943273905996759,
+          "score_ge_0.75": 0.9805510534846029
+        }
+      }
+    },
+    "experiment_id": "EXP028",
+    "artifact": "D:/openhands/projects/v2/phishing_ai_master\\models\\versions\\candidates\\CLEAN_TRAIN_ONLY.joblib"
+  },
+  "EXT_RANDOM_40K": {
+    "config": {
+      "n_legit": 20000,
+      "n_phish": 20000,
+      "mode": "random",
+      "C": 1.0,
+      "class_weight": "balanced",
+      "external_weight": 1.0,
+      "n_train": 154873,
+      "n_features": 20000
+    },
+    "training_time_s": 4.49,
+    "dev": {
+      "n": 22586,
+      "positives": 11701,
+      "negatives": 10885,
+      "at_0.5": {
+        "accuracy": 0.8925440538386611,
+        "precision": 0.9406956852309447,
+        "recall": 0.845910605931117,
+        "f1": 0.8907888223912163,
+        "specificity": 0.9426734037666513,
+        "fpr": 0.057326596233348646,
+        "roc_auc": 0.9563320520720759,
+        "pr_auc": 0.9654371883770314,
+        "brier": 0.08038327415436514,
+        "tp": 9898,
+        "fp": 624,
+        "tn": 10261,
+        "fn": 1803,
+        "ece": 0.021276986857460288
+      },
+      "best_threshold_fpr_le_0.01": {
+        "threshold": 0.827999801937588,
+        "accuracy": 0.8433100150535731,
+        "precision": 0.9871090952494629,
+        "recall": 0.7067771985300402,
+        "f1": 0.8237462025001245,
+        "specificity": 0.9900780891134588,
+        "fpr": 0.009921910886541112,
+        "roc_auc": 0.9563320520720759,
+        "pr_auc": 0.9654371883770314,
+        "brier": 0.08038327415436514,
+        "tp": 8270,
+        "fp": 108,
+        "tn": 10777,
+        "fn": 3431
+      },
+      "three_class_0.25_0.75": {
+        "phishing_recall": 0.7478847961712675,
+        "phishing_detected_incl_review": 0.9312024613280916,
+        "legit_fpr": 0.015617822691777675,
+        "review_rate": 0.198087310723457,
+        "review_rate_legit": 0.21396417087735417,
+        "review_rate_phish": 0.1833176651568242
+      },
+      "auth": {}
+    },
+    "external_dev": {
+      "n": 62767,
+      "positives": 30836,
+      "negatives": 31931,
+      "at_0.5": {
+        "accuracy": 0.9781732439020504,
+        "precision": 0.9930722891566265,
+        "recall": 0.9622843429757426,
+        "f1": 0.9774359312207656,
+        "specificity": 0.993517271616924,
+        "fpr": 0.006482728383076008,
+        "roc_auc": 0.9962996881746724,
+        "pr_auc": 0.9969840253746862,
+        "brier": 0.02046694103859429,
+        "tp": 29673,
+        "fp": 207,
+        "tn": 31724,
+        "fn": 1163,
+        "ece": 0.04067650393645596
+      },
+      "best_threshold_fpr_le_0.01": {
+        "threshold": 0.45136797022870434,
+        "accuracy": 0.9789379769624166,
+        "precision": 0.989420270628814,
+        "recall": 0.9674730834090025,
+        "f1": 0.9783236046435364,
+        "specificity": 0.9900097084338104,
+        "fpr": 0.009990291566189597,
+        "roc_auc": 0.9962996881746724,
+        "pr_auc": 0.9969840253746862,
+        "brier": 0.02046694103859429,
+        "tp": 29833,
+        "fp": 319,
+        "tn": 31612,
+        "fn": 1003
+      },
+      "three_class_0.25_0.75": {
+        "phishing_recall": 0.927487352445194,
+        "phishing_detected_incl_review": 0.985860682319367,
+        "legit_fpr": 0.0006263505684131408,
+        "review_rate": 0.05666990616088072,
+        "review_rate_legit": 0.05502489743509442,
+        "review_rate_phish": 0.05837332987417304
+      },
+      "auth": {
+        "legit_auth": {
+          "n": 10,
+          "mean_score": 0.3582845131272979,
+          "score_ge_0.5": 0.3,
+          "score_ge_0.75": 0.2
+        },
+        "phish_auth": {
+          "n": 1234,
+          "mean_score": 0.9797618843406588,
+          "score_ge_0.5": 0.9951377633711507,
+          "score_ge_0.75": 0.9813614262560778
+        }
+      }
+    },
+    "experiment_id": "EXP029",
+    "artifact": "D:/openhands/projects/v2/phishing_ai_master\\models\\versions\\candidates\\EXT_RANDOM_40K.joblib"
+  },
+  "EXT_RANDOM_80K": {
+    "config": {
+      "n_legit": 40000,
+      "n_phish": 40000,
+      "mode": "random",
+      "C": 1.0,
+      "class_weight": "balanced",
+      "external_weight": 1.0,
+      "n_train": 194873,
+      "n_features": 20000
+    },
+    "training_time_s": 5.88,
+    "dev": {
+      "n": 22586,
+      "positives": 11701,
+      "negatives": 10885,
+      "at_0.5": {
+        "accuracy": 0.8902860178871868,
+        "precision": 0.9364057916154065,
+        "recall": 0.8456542175882403,
+        "f1": 0.8887192383689599,
+        "specificity": 0.9382636655948553,
+        "fpr": 0.06173633440514469,
+        "roc_auc": 0.9539448964096485,
+        "pr_auc": 0.9638683597416533,
+        "brier": 0.0817579450996292,
+        "tp": 9895,
+        "fp": 672,
+        "tn": 10213,
+        "fn": 1806,
+        "ece": 0.016783125378343897
+      },
+      "best_threshold_fpr_le_0.01": {
+        "threshold": 0.8454540032681649,
+        "accuracy": 0.8406535021694855,
+        "precision": 0.9871332371332371,
+        "recall": 0.7015639688915477,
+        "f1": 0.820202827596543,
+        "specificity": 0.9901699586587046,
+        "fpr": 0.009830041341295361,
+        "roc_auc": 0.9539448964096485,
+        "pr_auc": 0.9638683597416533,
+        "brier": 0.0817579450996292,
+        "tp": 8209,
+        "fp": 107,
+        "tn": 10778,
+        "fn": 3492
+      },
+      "three_class_0.25_0.75": {
+        "phishing_recall": 0.7506196051619519,
+        "phishing_detected_incl_review": 0.9298350568327494,
+        "legit_fpr": 0.016812126779972437,
+        "review_rate": 0.19848578765607014,
+        "review_rate_legit": 0.21920073495636197,
+        "review_rate_phish": 0.17921545167079736
+      },
+      "auth": {}
+    },
+    "external_dev": {
+      "n": 62767,
+      "positives": 30836,
+      "negatives": 31931,
+      "at_0.5": {
+        "accuracy": 0.981056924817181,
+        "precision": 0.9959185038974943,
+        "recall": 0.9653975872356986,
+        "f1": 0.9804205707510663,
+        "specificity": 0.9961792615326799,
+        "fpr": 0.0038207384673201593,
+        "roc_auc": 0.997219641079837,
+        "pr_auc": 0.9977857232499103,
+        "brier": 0.01652420801871559,
+        "tp": 29769,
+        "fp": 122,
+        "tn": 31809,
+        "fn": 1067,
+        "ece": 0.03239813145626642
+      },
+      "best_threshold_fpr_le_0.01": {
+        "threshold": 0.36815366472520195,
+        "accuracy": 0.9836538308346743,
+        "precision": 0.9895552781974644,
+        "recall": 0.9770398235828253,
+        "f1": 0.9832577265755034,
+        "specificity": 0.9900410259622311,
+        "fpr": 0.00995897403776894,
+        "roc_auc": 0.997219641079837,
+        "pr_auc": 0.9977857232499103,
+        "brier": 0.01652420801871559,
+        "tp": 30128,
+        "fp": 318,
+        "tn": 31613,
+        "fn": 708
+      },
+      "three_class_0.25_0.75": {
+        "phishing_recall": 0.9331949669217797,
+        "phishing_detected_incl_review": 0.9862174082241536,
+        "legit_fpr": 0.00043844539788919857,
+        "review_rate": 0.040483056383131266,
+        "review_rate_legit": 0.02837368074911528,
+        "review_rate_phish": 0.05302244130237385
+      },
+      "auth": {
+        "legit_auth": {
+          "n": 10,
+          "mean_score": 0.33395160742389207,
+          "score_ge_0.5": 0.3,
+          "score_ge_0.75": 0.2
+        },
+        "phish_auth": {
+          "n": 1234,
+          "mean_score": 0.9819304320467412,
+          "score_ge_0.5": 0.9967585089141004,
+          "score_ge_0.75": 0.9829821717990276
+        }
+      }
+    },
+    "experiment_id": "EXP030",
+    "artifact": "D:/openhands/projects/v2/phishing_ai_master\\models\\versions\\candidates\\EXT_RANDOM_80K.joblib"
+  },
+  "EXT_RANDOM_160K": {
+    "config": {
+      "n_legit": 80000,
+      "n_phish": 80000,
+      "mode": "random",
+      "C": 1.0,
+      "class_weight": "balanced",
+      "external_weight": 1.0,
+      "n_train": 274873,
+      "n_features": 20000
+    },
+    "training_time_s": 7.78,
+    "dev": {
+      "n": 22586,
+      "positives": 11701,
+      "negatives": 10885,
+      "at_0.5": {
+        "accuracy": 0.8878951562915081,
+        "precision": 0.9303482587064676,
+        "recall": 0.8470216220835826,
+        "f1": 0.8867316811308938,
+        "specificity": 0.9318327974276527,
+        "fpr": 0.06816720257234726,
+        "roc_auc": 0.9510588375326624,
+        "pr_auc": 0.9619807571173657,
+        "brier": 0.08339943488955703,
+        "tp": 9911,
+        "fp": 742,
+        "tn": 10143,
+        "fn": 1790,
+        "ece": 0.012498163393903621
+      },
+      "best_threshold_fpr_le_0.01": {
+        "threshold": 0.8640074829832077,
+        "accuracy": 0.839280970512707,
+        "precision": 0.9869675395197297,
+        "recall": 0.6990000854627809,
+        "f1": 0.8183910346207725,
+        "specificity": 0.9900780891134588,
+        "fpr": 0.009921910886541112,
+        "roc_auc": 0.9510588375326624,
+        "pr_auc": 0.9619807571173657,
+        "brier": 0.08339943488955703,
+        "tp": 8179,
+        "fp": 108,
+        "tn": 10777,
+        "fn": 3522
+      },
+      "three_class_0.25_0.75": {
+        "phishing_recall": 0.7582257926672934,
+        "phishing_detected_incl_review": 0.9295786684898727,
+        "legit_fpr": 0.019384474046853468,
+        "review_rate": 0.19897281501815284,
+        "review_rate_legit": 0.22866329811667432,
+        "review_rate_phish": 0.17135287582257927
+      },
+      "auth": {}
+    },
+    "external_dev": {
+      "n": 62767,
+      "positives": 30836,
+      "negatives": 31931,
+      "at_0.5": {
+        "accuracy": 0.9830006213456115,
+        "precision": 0.9973270072504928,
+        "recall": 0.9679919574523285,
+        "f1": 0.9824405496585206,
+        "specificity": 0.9974945977263474,
+        "fpr": 0.002505402273652563,
+        "roc_auc": 0.9977075408728784,
+        "pr_auc": 0.9982301131528044,
+        "brier": 0.013887547509051423,
+        "tp": 29849,
+        "fp": 80,
+        "tn": 31851,
+        "fn": 987,
+        "ece": 0.025229848716714364
+      },
+      "best_threshold_fpr_le_0.01": {
+        "threshold": 0.30926087604618785,
+        "accuracy": 0.9866808991986235,
+        "precision": 0.9897159647404505,
+        "recall": 0.9831041639641976,
+        "f1": 0.9863989848046074,
+        "specificity": 0.990134978547493,
+        "fpr": 0.009865021452506968,
+        "roc_auc": 0.9977075408728784,
+        "pr_auc": 0.9982301131528044,
+        "brier": 0.013887547509051423,
+        "tp": 30315,
+        "fp": 315,
+        "tn": 31616,
+        "fn": 521
+      },
+      "three_class_0.25_0.75": {
+        "phishing_recall": 0.9389025813983656,
+        "phishing_detected_incl_review": 0.9871254377999741,
+        "legit_fpr": 0.0002818577557859134,
+        "review_rate": 0.03194353720904297,
+        "review_rate_legit": 0.016222479721900347,
+        "review_rate_phish": 0.04822285640160851
+      },
+      "auth": {
+        "legit_auth": {
+          "n": 10,
+          "mean_score": 0.31538468148109783,
+          "score_ge_0.5": 0.3,
+          "score_ge_0.75": 0.1
+        },
+        "phish_auth": {
+          "n": 1234,
+          "mean_score": 0.9851447369555799,
+          "score_ge_0.5": 0.9983792544570502,
+          "score_ge_0.75": 0.9854132901134521
+        }
+      }
+    },
+    "experiment_id": "EXP031",
+    "artifact": "D:/openhands/projects/v2/phishing_ai_master\\models\\versions\\candidates\\EXT_RANDOM_160K.joblib"
+  },
+  "EXT_HARD_20K": {
+    "config": {
+      "n_legit": 10000,
+      "n_phish": 10000,
+      "mode": "hard",
+      "C": 1.0,
+      "class_weight": "balanced",
+      "external_weight": 1.0,
+      "n_train": 134873,
+      "n_features": 20000
+    },
+    "training_time_s": 3.72,
+    "dev": {
+      "n": 22586,
+      "positives": 11701,
+      "negatives": 10885,
+      "at_0.5": {
+        "accuracy": 0.8906402196050651,
+        "precision": 0.9382774665273953,
+        "recall": 0.8444577386548159,
+        "f1": 0.888898884490824,
+        "specificity": 0.9402847955902618,
+        "fpr": 0.059715204409738175,
+        "roc_auc": 0.9551839143735952,
+        "pr_auc": 0.9649145812224446,
+        "brier": 0.08137936577511748,
+        "tp": 9881,
+        "fp": 650,
+        "tn": 10235,
+        "fn": 1820,
+        "ece": 0.028500466175550822
+      },
+      "best_threshold_fpr_le_0.01": {
+        "threshold": 0.8185718147205269,
+        "accuracy": 0.8439298680598601,
+        "precision": 0.9871306005719733,
+        "recall": 0.7079736774634646,
+        "f1": 0.8245657691733439,
+        "specificity": 0.9900780891134588,
+        "fpr": 0.009921910886541112,
+        "roc_auc": 0.9551839143735952,
+        "pr_auc": 0.9649145812224446,
+        "brier": 0.08137936577511748,
+        "tp": 8284,
+        "fp": 108,
+        "tn": 10777,
+        "fn": 3417
+      },
+      "three_class_0.25_0.75": {
+        "phishing_recall": 0.745064524399624,
+        "phishing_detected_incl_review": 0.9390650371763097,
+        "legit_fpr": 0.014974735875057418,
+        "review_rate": 0.21486761710794297,
+        "review_rate_legit": 0.23729903536977492,
+        "review_rate_phish": 0.19400051277668576
+      },
+      "auth": {}
+    },
+    "external_dev": {
+      "n": 62767,
+      "positives": 30836,
+      "negatives": 31931,
+      "at_0.5": {
+        "accuracy": 0.982044705020154,
+        "precision": 0.9971551926101945,
+        "recall": 0.9662083279283954,
+        "f1": 0.9814378654368772,
+        "specificity": 0.9973380100842442,
+        "fpr": 0.0026619899157558483,
+        "roc_auc": 0.9975435473604534,
+        "pr_auc": 0.9980701479199251,
+        "brier": 0.016621000779500933,
+        "tp": 29794,
+        "fp": 85,
+        "tn": 31846,
+        "fn": 1042,
+        "ece": 0.04148884813757915
+      },
+      "best_threshold_fpr_le_0.01": {
+        "threshold": 0.3466184287130808,
+        "accuracy": 0.9856134593018624,
+        "precision": 0.9896293388294566,
+        "recall": 0.9809962381631859,
+        "f1": 0.985293878149276,
+        "specificity": 0.9900723434906518,
+        "fpr": 0.009927656509348282,
+        "roc_auc": 0.9975435473604534,
+        "pr_auc": 0.9980701479199251,
+        "brier": 0.016621000779500933,
+        "tp": 30250,
+        "fp": 317,
+        "tn": 31614,
+        "fn": 586
+      },
+      "three_class_0.25_0.75": {
+        "phishing_recall": 0.9273252043066545,
+        "phishing_detected_incl_review": 0.9877416007264237,
+        "legit_fpr": 0.00025054022736525634,
+        "review_rate": 0.04309589433938216,
+        "review_rate_legit": 0.02636935893019323,
+        "review_rate_phish": 0.0604163964197691
+      },
+      "auth": {
+        "legit_auth": {
+          "n": 10,
+          "mean_score": 0.29686684512228295,
+          "score_ge_0.5": 0.3,
+          "score_ge_0.75": 0.0
+        },
+        "phish_auth": {
+          "n": 1234,
+          "mean_score": 0.9740292124767067,
+          "score_ge_0.5": 0.9951377633711507,
+          "score_ge_0.75": 0.9748784440842788
+        }
+      }
+    },
+    "experiment_id": "EXP032",
+    "artifact": "D:/openhands/projects/v2/phishing_ai_master\\models\\versions\\candidates\\EXT_HARD_20K.joblib"
+  },
+  "EXT_HARD_40K": {
+    "config": {
+      "n_legit": 20000,
+      "n_phish": 20000,
+      "mode": "hard",
+      "C": 1.0,
+      "class_weight": "balanced",
+      "external_weight": 1.0,
+      "n_train": 154873,
+      "n_features": 20000
+    },
+    "training_time_s": 4.25,
+    "dev": {
+      "n": 22586,
+      "positives": 11701,
+      "negatives": 10885,
+      "at_0.5": {
+        "accuracy": 0.889400513592491,
+        "precision": 0.9353770460781531,
+        "recall": 0.8448850525596103,
+        "f1": 0.887831162999551,
+        "specificity": 0.9372531005971521,
+        "fpr": 0.06274689940284796,
+        "roc_auc": 0.9543482045769343,
+        "pr_auc": 0.9643526981671107,
+        "brier": 0.0816513281480819,
+        "tp": 9886,
+        "fp": 683,
+        "tn": 10202,
+        "fn": 1815,
+        "ece": 0.02496191874646909
+      },
+      "best_threshold_fpr_le_0.01": {
+        "threshold": 0.8274464209734412,
+        "accuracy": 0.843531391127247,
+        "precision": 0.9871167839675534,
+        "recall": 0.7072045124348346,
+        "f1": 0.8240390360485959,
+        "specificity": 0.9900780891134588,
+        "fpr": 0.009921910886541112,
+        "roc_auc": 0.9543482045769343,
+        "pr_auc": 0.9643526981671107,
+        "brier": 0.0816513281480819,
+        "tp": 8275,
+        "fp": 108,
+        "tn": 10777,
+        "fn": 3426
+      },
+      "three_class_0.25_0.75": {
+        "phishing_recall": 0.7476284078283907,
+        "phishing_detected_incl_review": 0.937270318776173,
+        "legit_fpr": 0.015893431327514928,
+        "review_rate": 0.2121668290091207,
+        "review_rate_legit": 0.2363803399173174,
+        "review_rate_phish": 0.18964191094778224
+      },
+      "auth": {}
+    },
+    "external_dev": {
+      "n": 62767,
+      "positives": 30836,
+      "negatives": 31931,
+      "at_0.5": {
+        "accuracy": 0.9821562285914573,
+        "precision": 0.9973888591322978,
+        "recall": 0.9662083279283954,
+        "f1": 0.9815510311655795,
+        "specificity": 0.9975572327831888,
+        "fpr": 0.0024427672168112493,
+        "roc_auc": 0.997720561067273,
+        "pr_auc": 0.9982189553684004,
+        "brier": 0.015496315677821997,
+        "tp": 29794,
+        "fp": 78,
+        "tn": 31853,
+        "fn": 1042,
+        "ece": 0.03649269489797634
+      },
+      "best_threshold_fpr_le_0.01": {
+        "threshold": 0.32261342226177947,
+        "accuracy": 0.9865534436885625,
+        "precision": 0.9895853738165198,
+        "recall": 0.9829744454533662,
+        "f1": 0.9862688315491491,
+        "specificity": 0.9900097084338104,
+        "fpr": 0.009990291566189597,
+        "roc_auc": 0.997720561067273,
+        "pr_auc": 0.9982189553684004,
+        "brier": 0.015496315677821997,
+        "tp": 30311,
+        "fp": 319,
+        "tn": 31612,
+        "fn": 525
+      },
+      "three_class_0.25_0.75": {
+        "phishing_recall": 0.9306978855882735,
+        "phishing_detected_incl_review": 0.9872875859385134,
+        "legit_fpr": 0.00021922269894459928,
+        "review_rate": 0.03785428648812274,
+        "review_rate_legit": 0.019761360433434592,
+        "review_rate_phish": 0.05658970035023998
+      },
+      "auth": {
+        "legit_auth": {
+          "n": 10,
+          "mean_score": 0.2847664192211564,
+          "score_ge_0.5": 0.3,
+          "score_ge_0.75": 0.0
+        },
+        "phish_auth": {
+          "n": 1234,
+          "mean_score": 0.975627310411152,
+          "score_ge_0.5": 0.9959481361426256,
+          "score_ge_0.75": 0.9756888168557536
+        }
+      }
+    },
+    "experiment_id": "EXP033",
+    "artifact": "D:/openhands/projects/v2/phishing_ai_master\\models\\versions\\candidates\\EXT_HARD_40K.joblib"
+  },
+  "EXT_RANDOM_160K_W0.5": {
+    "config": {
+      "n_legit": 80000,
+      "n_phish": 80000,
+      "mode": "random",
+      "C": 1.0,
+      "class_weight": "balanced",
+      "external_weight": 0.5,
+      "n_train": 274873,
+      "n_features": 20000
+    },
+    "training_time_s": 8.16,
+    "dev": {
+      "n": 22586,
+      "positives": 11701,
+      "negatives": 10885,
+      "at_0.5": {
+        "accuracy": 0.890020366598778,
+        "precision": 0.9360393603936039,
+        "recall": 0.8454832920263226,
+        "f1": 0.8884598114054783,
+        "specificity": 0.9378961874138723,
+        "fpr": 0.062103812586127696,
+        "roc_auc": 0.9536348985244303,
+        "pr_auc": 0.963605741304473,
+        "brier": 0.08201509720595661,
+        "tp": 9893,
+        "fp": 676,
+        "tn": 10209,
+        "fn": 1808,
+        "ece": 0.016320900790894575
+      },
+      "best_threshold_fpr_le_0.01": {
+        "threshold": 0.8455641738740238,
+        "accuracy": 0.8402550252368723,
+        "precision": 0.9870020459742448,
+        "recall": 0.7008802666438766,
+        "f1": 0.8196901549225387,
+        "specificity": 0.9900780891134588,
+        "fpr": 0.009921910886541112,
+        "roc_auc": 0.9536348985244303,
+        "pr_auc": 0.963605741304473,
+        "brier": 0.08201509720595661,
+        "tp": 8201,
+        "fp": 108,
+        "tn": 10777,
+        "fn": 3500
+      },
+      "three_class_0.25_0.75": {
+        "phishing_recall": 0.7508759935048287,
+        "phishing_detected_incl_review": 0.9300059823946671,
+        "legit_fpr": 0.017179604960955445,
+        "review_rate": 0.1982201363676614,
+        "review_rate_legit": 0.2187413872301332,
+        "review_rate_phish": 0.17912998888983847
+      },
+      "auth": {}
+    },
+    "external_dev": {
+      "n": 62767,
+      "positives": 30836,
+      "negatives": 31931,
+      "at_0.5": {
+        "accuracy": 0.98092946930712,
+        "precision": 0.9956188756228889,
+        "recall": 0.9654300168634065,
+        "f1": 0.9802920789633995,
+        "specificity": 0.995897403776894,
+        "fpr": 0.004102596223106073,
+        "roc_auc": 0.9972091111753532,
+        "pr_auc": 0.9977678717574386,
+        "brier": 0.01664236487110925,
+        "tp": 29770,
+        "fp": 131,
+        "tn": 31800,
+        "fn": 1066,
+        "ece": 0.03246955451911644
+      },
+      "best_threshold_fpr_le_0.01": {
+        "threshold": 0.38168858818497087,
+        "accuracy": 0.9830962129781573,
+        "precision": 0.989511064347483,
+        "recall": 0.9759372162407576,
+        "f1": 0.9826772682002971,
+        "specificity": 0.9900097084338104,
+        "fpr": 0.009990291566189597,
+        "roc_auc": 0.9972091111753532,
+        "pr_auc": 0.9977678717574386,
+        "brier": 0.01664236487110925,
+        "tp": 30094,
+        "fp": 319,
+        "tn": 31612,
+        "fn": 742
+      },
+      "three_class_0.25_0.75": {
+        "phishing_recall": 0.9340057076144765,
+        "phishing_detected_incl_review": 0.9867687118951874,
+        "legit_fpr": 0.0004697629263098556,
+        "review_rate": 0.04113626587219399,
+        "review_rate_legit": 0.029908239641727476,
+        "review_rate_phish": 0.05276300428071086
+      },
+      "auth": {
+        "legit_auth": {
+          "n": 10,
+          "mean_score": 0.3389526628859948,
+          "score_ge_0.5": 0.3,
+          "score_ge_0.75": 0.2
+        },
+        "phish_auth": {
+          "n": 1234,
+          "mean_score": 0.9822710268213208,
+          "score_ge_0.5": 0.9967585089141004,
+          "score_ge_0.75": 0.9829821717990276
+        }
+      }
+    },
+    "experiment_id": "EXP034",
+    "artifact": "D:/openhands/projects/v2/phishing_ai_master\\models\\versions\\candidates\\EXT_RANDOM_160K_W0.5.joblib"
+  }
+}

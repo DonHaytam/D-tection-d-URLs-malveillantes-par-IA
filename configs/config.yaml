@@ -1,0 +1,50 @@
+# Phishing AI Master 2 — Configuration du projet (config.yaml)
+# Version 1.0 — Initialisé Phase 1
+
+project:
+  name: phishing_ai_master
+  title_fr: "Détection intelligente des URL de phishing et malveillantes par Intelligence Artificielle et Machine Learning"
+  root: "D:\\openhands\\projects\\v2\\phishing_ai_master"
+  owner: "projet-M2-IA"
+
+environment:
+  os: "Windows 11 Famille"
+  python: "3.10.0"
+  python_alt: "3.13.14 (présent, non cible)"
+  ram_gb: 8
+  cpu_cores_logical: 8
+  gpu: "Intel Iris Xe (2 Go), torch 2.12.0+cpu (cuda_available: false)"
+
+data:
+  raw: "data/raw"
+  interim: "data/interim"
+  processed: "data/processed"
+  splits: "data/splits"
+  manifests: "data/manifests"
+  external: "data/external"
+  splits_ids: ["TRAIN", "DEV", "LOCKED_TEST", "INDEPENDENT_FINAL_TEST"]
+  # LOCKED_TEST et INDEPENDENT_FINAL_TEST : non accédés pendant development (voir DATA_LEAKAGE_AUDIT.md)
+
+features:
+  lexical: ["url_length", "host_length", "path_length", "query_length", "dots", "hyphens", "digits", "special_chars", "subdomains", "path_segments"]
+  structural: ["scheme", "domain_structure", "subdomain_depth", "tld", "is_ip", "has_port", "encoded_chars", "query_param_count", "has_fragment"]
+  # Representations vérifiées Phase 1-6 (remplir après Phase 6)
+
+models:
+  ids: ["M1_LR", "M2_SVM", "M3_RF", "M4_GB", "M5_XGBOOST", "M6_HYBRID"]
+  versions_dir: "models/versions"
+
+evaluation:
+  metrics: ["accuracy", "precision", "recall", "specificity", "fpr", "f1", "roc_auc", "pr_auc", "brier", "ece", "confusion_matrix"]
+  decision:
+    low: "NOT_MEASURED"
+    high: "NOT_MEASURED"
+
+deployment:
+  api: "deployment/api"
+  frontend: "deployment/frontend"
+  database: "database/predictions.db"
+
+testing:
+  runner: "pytest"
+  test_dir: "tests"

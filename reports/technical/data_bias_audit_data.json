@@ -1,0 +1,60 @@
+{
+  "train_n": 114873,
+  "dev_n": 22586,
+  "train_legit": 58221,
+  "train_phish": 56652,
+  "dev_legit": 10885,
+  "dev_phish": 11701,
+  "train_legit_types": {
+    "other": 31929,
+    "homepage": 25518,
+    "support": 188,
+    "authentication": 184,
+    "ecommerce": 138,
+    "api_auth": 90,
+    "account": 56,
+    "dashboard": 47,
+    "password_reset": 41,
+    "security_verify": 30
+  },
+  "train_legit_n": 58221,
+  "train_phish_types": {
+    "other": 30091,
+    "homepage": 21647,
+    "authentication": 2707,
+    "dashboard": 1098,
+    "account": 380,
+    "security_verify": 306,
+    "support": 190,
+    "ecommerce": 142,
+    "api_auth": 80,
+    "password_reset": 11
+  },
+  "train_phish_n": 56652,
+  "dev_legit_types": {
+    "homepage": 5437,
+    "other": 5289,
+    "authentication": 47,
+    "support": 36,
+    "api_auth": 23,
+    "ecommerce": 21,
+    "security_verify": 11,
+    "dashboard": 10,
+    "password_reset": 6,
+    "account": 5
+  },
+  "dev_legit_n": 10885,
+  "dev_phish_types": {
+    "other": 6449,
+    "homepage": 4234,
+    "authentication": 557,
+    "dashboard": 252,
+    "account": 75,
+    "security_verify": 56,
+    "support": 38,
+    "ecommerce": 24,
+    "api_auth": 12,
+    "password_reset": 4
+  },
+  "dev_phish_n": 11701
+}
