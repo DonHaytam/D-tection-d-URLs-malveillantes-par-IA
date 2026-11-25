@@ -1,0 +1,10 @@
+=== Multi-Source Data Preprocessing Report ===
+PhiUSIIL: 235795 rows (label: {1: 134850, 0: 100945})
+imanoop7: 100000 rows (label: {1: 50000, 0: 50000})
+shreyagopal: 10000 rows (label: {0: 5000, 1: 5000})
+Unified before dedup: 345795 rows
+Unified after dedup: 284650 rows
+Unified label counts: {1: 183862, 0: 100788}
+Unified source counts: {'PhiUSIIL_UCI': 235370, 'imanoop7_HF': 45727, 'shreyagopal_GitHub': 3553}
+Train: 227720 rows {1: 147089, 0: 80631}
+Test: 56930 rows {1: 36773, 0: 20157}
