@@ -362,28 +362,53 @@ async function loadStats() {
 
 function renderHistogram(elementId, bins) {
     const el = document.getElementById(elementId);
-    // Handle both array format [{bin, count}] and dict format {bin_0: count, ...}
+    if (!el) return;
+    // Force conversion to array
     let arr = [];
-    if (Array.isArray(bins)) {
-        arr = bins;
-    } else if (bins && typeof bins === 'object') {
-        // Convert dict {bin_0: count} to array format
-        const labels = ["0.0-0.1", "0.1-0.2", "0.2-0.3", "0.3-0.4", "0.4-0.5", "0.5-0.6", "0.6-0.7", "0.7-0.8", "0.8-0.9", "0.9-1.0"];
-        for (let i = 0; i < 10; i++) {
-            const key = 'bin_' + i;
-            arr.push({bin: labels[i], count: bins[key] || 0});
+    try {
+        if (bins === null || bins === undefined) {
+            el.innerHTML = '<p class="muted">Pas assez de donnees.</p>';
+            return;
         }
+        if (Array.isArray(bins)) {
+            arr = bins;
+        } else if (typeof bins === 'object') {
+            const labels = ["0.0-0.1", "0.1-0.2", "0.2-0.3", "0.3-0.4", "0.4-0.5", "0.5-0.6", "0.6-0.7", "0.7-0.8", "0.8-0.9", "0.9-1.0"];
+            for (let i = 0; i < 10; i++) {
+                const key = 'bin_' + i;
+                const val = bins[key];
+                arr.push({bin: labels[i], count: (typeof val === 'number') ? val : 0});
+            }
+        } else {
+            el.innerHTML = '<p class="muted">Pas assez de donnees.</p>';
+            return;
+        }
+    } catch (e) {
+        el.innerHTML = '<p class="muted">Pas assez de donnees.</p>';
+        return;
     }
     if (arr.length === 0) {
         el.innerHTML = '<p class="muted">Pas assez de donnees.</p>';
         return;
     }
-    const max = Math.max(1, ...arr.map(b => b.count));
-    el.innerHTML = arr.map(b =>
-        '<div class="bar-row"><span class="bar-label">' + escapeHtml(b.bin) +
-        '</span><div class="bar-track"><div class="bar-fill" style="width:' +
-        (b.count / max * 100) + '%"></div></div><span class="bar-value">' + b.count + "</span></div>"
-    ).join("");
+    try {
+        // Use for loop instead of map to avoid any issues
+        let max = 1;
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].count > max) max = arr[i].count;
+        }
+        let html = '';
+        for (let i = 0; i < arr.length; i++) {
+            const b = arr[i];
+            const width = (b.count / max * 100);
+            html += '<div class="bar-row"><span class="bar-label">' + escapeHtml(b.bin) +
+                '</span><div class="bar-track"><div class="bar-fill" style="width:' +
+                width + '%"></div></div><span class="bar-value">' + b.count + "</span></div>";
+        }
+        el.innerHTML = html;
+    } catch (e) {
+        el.innerHTML = '<p class="muted">Erreur d\'affichage.</p>';
+    }
 }
 
 function renderDaily(elementId, daily) {
