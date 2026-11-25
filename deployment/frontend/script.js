@@ -362,8 +362,24 @@ async function loadStats() {
 
 function renderHistogram(elementId, bins) {
     const el = document.getElementById(elementId);
-    const max = Math.max(1, ...bins.map(b => b.count));
-    el.innerHTML = bins.map(b =>
+    // Handle both array format [{bin, count}] and dict format {bin_0: count, ...}
+    let arr = [];
+    if (Array.isArray(bins)) {
+        arr = bins;
+    } else if (bins && typeof bins === 'object') {
+        // Convert dict {bin_0: count} to array format
+        const labels = ["0.0-0.1", "0.1-0.2", "0.2-0.3", "0.3-0.4", "0.4-0.5", "0.5-0.6", "0.6-0.7", "0.7-0.8", "0.8-0.9", "0.9-1.0"];
+        for (let i = 0; i < 10; i++) {
+            const key = 'bin_' + i;
+            arr.push({bin: labels[i], count: bins[key] || 0});
+        }
+    }
+    if (arr.length === 0) {
+        el.innerHTML = '<p class="muted">Pas assez de donnees.</p>';
+        return;
+    }
+    const max = Math.max(1, ...arr.map(b => b.count));
+    el.innerHTML = arr.map(b =>
         '<div class="bar-row"><span class="bar-label">' + escapeHtml(b.bin) +
         '</span><div class="bar-track"><div class="bar-fill" style="width:' +
         (b.count / max * 100) + '%"></div></div><span class="bar-value">' + b.count + "</span></div>"
