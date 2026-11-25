@@ -563,6 +563,12 @@ async function loadLab() {
     }
 }
 
+
+
+function refreshLab() {
+    // Rafraîchir les données du laboratoire
+    loadLab();
+}
 function renderAbCards(ab) {
     const variants = ab.variants || {};
     [["abM1", "M1"], ["abEnsemble", "ENSEMBLE"]].forEach(([id, name]) => {

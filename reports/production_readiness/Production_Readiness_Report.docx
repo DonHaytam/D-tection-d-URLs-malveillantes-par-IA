@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" standalone="true"?>
+<w:document xmlns:w="http://schemas.microsoft.com/office/word/2002/wordml">
+  <w:body>
+    <w:p>
+      <w:r>
+        <w:rPr>
+          <w:b />
+          <w:sz w:val="24" />
+          <w:color w:val="1E3A8A" />
+        </w:rPr>
+        <w:t>Phishing AI Master 2</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Final Production Readiness Report</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t></w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Project: Phishing AI Master 2</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Repository: https://github.com/DonHaytam/D-tection-d-URLs-malveillantes-par-IA.git</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Branch: main</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Latest Commit: 59e7616</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Date: 2026-11-25</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Executive Summary</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>This report documents the production-hardening improvements applied to the Phishing AI Master 2 project. The application now enforces mandatory admin authentication in production, validates CORS configuration, and includes comprehensive security tests. The deployed model M1_LR_HARDNEG remains unchanged with thresholds 0.25 / 0.75 and checksum 388d774e9c98f74b2036f6d0ccf5dc634c61f38750c7ed6e3b24c196a2e99202.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Overall Status: PRODUCTION-READY (with environment configuration)</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>1. Mandatory Production Authentication</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>APP_ENV set to production: Implemented. APP_ENV environment variable with values development, testing, production.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>ADMIN_API_KEY must be configured: Enforced. Startup raises RuntimeError if missing or weak (minimum 24 characters).</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Production startup fails safely: Verified. Missing key, weak key, wildcard/empty CORS all raise RuntimeError at import.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Auth required for admin endpoints: Enforced. /retraining/run, /retraining/approve, /retraining/schedule require X-Admin-API-Key header.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Public predictions remain accessible: Verified. /predict, /health work without admin key.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>2. Role-Based Access Control (RBAC)</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>A minimal maintainable permission system has been introduced.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Role	Permissions	Can trigger retraining?	Can approve deployment?	Can view monitoring?</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>admin		retrain, approve, schedule, read_monitoring, read_history, read_stats	✅	✅	✅</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>analyst	read_monitoring, read_history, read_stats	❌	❌	✅</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>viewer	read_history, read_stats	❌	❌	❌</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Notes: Only the admin role is issued via the shared ADMIN_API_KEY; a full user-management system is deferred. Analysts and viewers cannot modify configuration or trigger retraining. Public prediction access (/predict) is separate from administrative roles.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>3. Production CORS Configuration</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>No wildcard origins in production: Enforced. ALLOWED_ORIGINS must be explicit; wildcard * raises RuntimeError in production.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Explicit allowed origins required: Configured. Default local origins: http://localhost:8501,http://127.0.0.1:8501,http://localhost:8000,http://127.0.0.1:8000.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Methods/headers restricted: Set. GET, POST, OPTIONS; Content-Type, X-Admin-API-Key, Authorization.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>OPTIONS preflight handled: Verified. FastAPI automatically handles preflight requests with the allowed methods/headers.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Configured credentials only when necessary: Verified. ALLOW_CREDENTIALS is True only when no wildcard is present.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>4. Explainability Status</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>The character-fragment explanation system has been disabled because n-gram contributions from long URLs produce noisy, non-interpretable output. The module src/inference/explainability.py is retained for future feature-based work.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Technical reason: The deployed model (M1_LR_HARDNEG) uses char TF-IDF features; isolating meaningful contributions for arbitrary long URLs without mathematical grounding risks presenting correlation as causation. A disabled but honest explanation system is preferable to misleading output.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>Future path: When a reliable, model-specific explanation method is implemented (e.g., perturbation-based with statistical validation), it can be re-enabled under this section.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:t>5. Security Test Results</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:t>python -m pytest tests/ -q 34 passed in 2.78s</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Test categories: Authentication, Authorization, CORS, Application lifecycle, Explainability.</w:t>
+    </w:p>
+    <w:p>
+      <w:t>6. Model and Thresholds</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Deployed model: M1_LR_HARDNEG</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Checksum: 388d774e9c98f74b2036f6d0ccf5dc634c61f38750c7ed6e3b24c196a2e99202 (verified unchanged)</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Thresholds: 0.25 (LEGITIMATE) / 0.75 (PHISHING)</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Convention: 0 = legitimate, 1 = phishing</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Three-class policy: <0.25 → LEGITIMATE, 0.25–0.75 → REVIEW, ≥0.75 → PHISHING</w:t>
+    </w:p>
+    <w:p>
+      <w:t>7. Deployment Instructions</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Copy .env.example to .env in the project root.</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Set environment variables: APP_ENV=production, ADMIN_API_KEY=<your-secure-key-24+ chars>, ALLOWED_ORIGINS=https://your-frontend-domain.com (comma-separated list).</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Run setup.bat or start uvicorn manually: python -m uvicorn deployment.api.main:app --host 127.0.0.1 --port 8000</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Verify /health reports admin_auth_enabled: true and app_env: production.</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Access the frontend at http://localhost:8501/index.html.</w:t>
+    </w:p>
+    <w:p>
+      <w:t>8. Known Limitations and Risks</w:t>
+    </w:p>
+    <w:p>
+      <w:t>RBAC limited to shared admin key (no user store) Documented as deferred; a full user-management system can be added later.</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Explainability disabled Future feature-based explanation can re-enable this section.</w:t>
+    </w:p>
+    <w:p>
+      <w:t>CORS must be explicitly configured per deployment Documented in .env.example; misconfiguration raises startup error.</w:t>
+    </w:p>
+    <w:p>
+      <w:t>No force-push or Git history rewrite Enforced by git workflow; always use git pull before git push.</w:t>
+    </w:p>
+    <w:p>
+      <w:t>9. Acceptance Checklist</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Production cannot start without valid admin secret ✅</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Administrative operations are protected ✅</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Public prediction remains functional ✅</w:t>
+    </w:p>
+    <w:p>
+      <w:t>RBAC implemented (or documented as deferred) ✅</w:t>
+    </w:p>
+    <w:p>
+      <w:t>No misleading explainability exposed ✅</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Existing model and thresholds unchanged ✅</w:t>
+    </w:p>
+    <w:p>
+      <w:t>All critical tests pass (34/34) ✅</w:t>
+    </w:p>
+    <w:p>
+      <w:t>No secrets committed ✅</w:t>
+    </w:p>
+    <w:p>
+      <w:t>Changes pushed to GitHub main without force ✅</w:t>
+    </w:p>
+</w:body>
+</w:document>
